@@ -18,6 +18,7 @@ const MovieList = () => {
     const [sfiltre,setFiltres]=useState({display:"none"})
     const Ajouter = () => {
         setStyle({display:"flex",justifyContent:"center"})
+        setFiltres({display:"none"})
     }
     const Ajouterf =()=>{
         setMovies([...movies,{Id:id,rate:rate,title:title,description:description,trailer:urlm,posterUrl:poster}])
@@ -25,18 +26,20 @@ const MovieList = () => {
     }
     const Search = ()=>{
       setFiltres({display:"flex",justifyContent:"center"})
+      setStyle({display:"none"})
     }
     useEffect(() => {
       const chercher = () => {
         if (filtre) {
-          setMovies(movies.filter(el => el.title.startsWith(filtre)));
+          setMovies(moviesData.filter(el => el.title.startsWith(filtre)));
         }
         else {
-          setMovies(movies)
+          setMovies(moviesData)
         }
+        
       };
   
-      chercher(); // Trigger the filtering when component mounts or when filtre changes
+      chercher(); 
     }, [filtre]);
   return (
     <div>
