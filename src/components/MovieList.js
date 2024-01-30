@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import moviesData from './Data'
 import MovieCard from './MovieCard'
 import Inputs from './Inputs'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons'
+import InputSearch from './InputSearch'
 const MovieList = () => {
     const [movies,setMovies]=useState(moviesData)
     const [id,setId]=useState(0)
@@ -13,6 +14,8 @@ const MovieList = () => {
     const [urlm,setUrl]=useState("")
     const [poster,setPoster]=useState("")
     const [style,setStyle]=useState({display:"none"})
+    const [filtre,setFilter]=useState("")
+    const [sfiltre,setFiltres]=useState({display:"none"})
     const Ajouter = () => {
         setStyle({display:"flex",justifyContent:"center"})
     }
@@ -20,17 +23,37 @@ const MovieList = () => {
         setMovies([...movies,{Id:id,rate:rate,title:title,description:description,trailer:urlm,posterUrl:poster}])
         setStyle({display:"none"})
     }
+    const Search = ()=>{
+      setFiltres({display:"flex",justifyContent:"center"})
+    }
+    useEffect(() => {
+      const chercher = () => {
+        if (filtre) {
+          setMovies(movies.filter(el => el.title.startsWith(filtre)));
+        }
+        else {
+          setMovies(movies)
+        }
+      };
+  
+      chercher(); // Trigger the filtering when component mounts or when filtre changes
+    }, [filtre]);
   return (
     <div>
-        <div style={{display:"flex"}}>
+        <div style={{display:"flex",justifyContent:"space-around"}}>
             
            <FontAwesomeIcon  onClick={()=>Ajouter()}icon={faPlus} />
+           <FontAwesomeIcon icon={faMagnifyingGlass} onClick={()=>Search()} />
+            </div>
+            <div style={sfiltre}>
+              <InputSearch  setFilter={setFilter}/>
             </div>
             <div style={style}>
              <Inputs setId={setId} setPoster={setPoster} setRate={setRate} setTitle={setTitle} setUrl={setUrl} setDescription={setDescription} />
              <button onClick={()=>Ajouterf()}>Add the Data</button>
             </div>
-       
+            <div>
+            </div>
         <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center"}}>
         {movies.map(el=><div style={{margin:"30px"}}><MovieCard  Id={el.id} Poster={el.posterUrl} Rate={el.rate} Title={el.title} Url={el.trailer} Description={el.description}/></div>)}
         </div>
