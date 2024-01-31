@@ -16,6 +16,7 @@ const MovieList = () => {
     const [style,setStyle]=useState({display:"none"})
     const [filtre,setFilter]=useState("")
     const [sfiltre,setFiltres]=useState({display:"none"})
+    const [frate,setFrate]=useState("")
     const Ajouter = () => {
         setStyle({display:"flex",justifyContent:"center"})
         setFiltres({display:"none"})
@@ -30,17 +31,24 @@ const MovieList = () => {
     }
     useEffect(() => {
       const chercher = () => {
-        if (filtre) {
-          setMovies(moviesData.filter(el => el.title.startsWith(filtre)));
+        if ((filtre)&&(frate==="")) {
+          setMovies(moviesData.filter(el => (el.title.toLowerCase().includes(filtre.toLowerCase().trim()))||(el.description.toLowerCase().includes(filtre.toLowerCase().trim()))));
+          console.log(frate)
         }
-        else {
+        else if((frate!=="")&&!(filtre)) {
+          setMovies(moviesData.filter(x=>frate==x.rate))
+        }
+        else if((filtre!=="") && (frate!="")) {
+          setMovies(moviesData.filter(el => ((el.title.toLowerCase().includes(filtre.toLowerCase().trim()))||(el.description.toLowerCase().includes(filtre.toLowerCase().trim())))&&frate==el.rate));
+        }
+        else if((filtre==="") && (frate==="")) {
           setMovies(moviesData)
         }
         
       };
   
       chercher(); 
-    }, [filtre]);
+    }, [filtre,frate]);
   return (
     <div>
         <div style={{display:"flex",justifyContent:"space-around"}}>
@@ -49,7 +57,7 @@ const MovieList = () => {
            <FontAwesomeIcon icon={faMagnifyingGlass} onClick={()=>Search()} />
             </div>
             <div style={sfiltre}>
-              <InputSearch  setFilter={setFilter}/>
+              <InputSearch  setFilter={setFilter} setFrate={setFrate} />
             </div>
             <div style={style}>
              <Inputs setId={setId} setPoster={setPoster} setRate={setRate} setTitle={setTitle} setUrl={setUrl} setDescription={setDescription} />
