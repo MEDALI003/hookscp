@@ -2,6 +2,8 @@ import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import Trailer from './Trailer';
 
 
 function MovieCard(props) {
@@ -10,11 +12,10 @@ function MovieCard(props) {
     { 
        arr[i]=1
     }
-    const ouvreLien = () => {
-      window.open(props.Url, '_blank');
-    };
+    
     
   return (
+  
     <Card style={{ width: '18rem'}}>
       <Card.Img variant="top" src={props.Poster} />
       <Card.Body>
@@ -29,10 +30,11 @@ function MovieCard(props) {
         
         </Card.Text>
         
-        <Button variant="primary" onClick={()=>{ouvreLien()}}>see the Trailer</Button>
+        <Link to={`/Trailer/${props.Id}`}><Button variant="primary" >see the Trailer</Button></Link>
 
       </Card.Body>
     </Card>
+    
   );
 }
 
